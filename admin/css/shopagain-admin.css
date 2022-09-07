@@ -1,0 +1,127 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+
+ .shopagain-layout__notice-list-hide{
+    display: none !important;
+}
+
+#wpcontent {
+    padding-left: 0;
+}
+
+.sac-settings {
+    width: 100%;
+    margin: 0;
+    font-family: "proxima-nova", Arial, Helvetica, sans-serif;
+}
+
+.sac-content-wrapper {
+    background-color: white;
+    width: 100%;
+}
+
+.sac-content {
+    width: 90%;
+    /*margin: 0 auto 0 auto;*/
+    font-family: 'Quicksand Bold', sans-serif;
+    padding: 20px 0px 80px 36px;
+    display: flex;
+}
+
+.sac-logo {
+    margin-top: -16px;
+}
+
+.sac-content-wrapper .sac-content-subtitles {
+    /*display: block;*/
+    padding-left: 58px;
+}
+
+.sac-content-subtitles {
+    font-family: 'Quicksand Bold', sans-serif;
+    width: 550px;
+}
+
+.sac-content-title {
+    display: block;
+    font-size: 30px;
+    line-height: 32px;
+    color: #373F47;
+    padding-bottom: 16px;
+}
+
+.sac-content-subtitle {
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #606A72;
+}
+
+.sac-content-subtitle a.subtitle-guide-link {
+    text-decoration: none;
+}
+
+.connect-buttons {
+    margin-top: 32px;
+}
+
+.connect-buttons .button  {
+    padding: 0.75rem 1.25rem;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    background-color: #fff;
+    -webkit-transition: border-color 200ms cubic-bezier(.55, .055, .675, .19), color 200ms cubic-bezier(.55, .055, .675, .19), background-color 200ms cubic-bezier(.55, .055, .675, .19);
+    transition: border-color 200ms cubic-bezier(.55, .055, .675, .19), color 200ms cubic-bezier(.55, .055, .675, .19), background-color 200ms cubic-bezier(.55, .055, .675, .19);
+    color: #ea454a;
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+}
+
+a.button.button-primary {
+    border-color: #ea454a;
+}
+
+a.button.button-primary:hover {
+    border-color: #ea454a;
+    background: #ea454a;
+}
+
+a.button.create-account {
+    /* border-color: white;
+    text-align: center;
+    padding: 0px 16px;
+    margin-left: 16px;
+    background: white;
+    font-size: 14px;
+    color: #2B98D3;
+    border-style: none; */
+    border-color: #7743a3;
+    margin-left: 16px;
+    background: #7743a3;
+    color:white;
+}
+
+a.button.create-account:hover {
+    background: white;
+    color:#7743a3;
+    border-color: #7743a3;
+}
+
+.subtitle-guide-link {
+    color: #ea454a;
+}
