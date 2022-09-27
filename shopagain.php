@@ -11,8 +11,8 @@
  * Plugin URI:        https://shopagain.io/
  * Description:       The plugin helps to transmit your WooCommerce data including abandoned cart data with ShopAgain.
  * Version:           1.0.0
- * Author:            Softeq
- * Author URI:        https://softeq.com
+ * Author:            ShopAgain
+ * Author URI:        https://shopagain.io
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       shopagain.io

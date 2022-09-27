@@ -2,7 +2,7 @@
  /**
  * All the functions are related to order
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain
@@ -119,6 +119,25 @@ add_action( 'woocommerce_after_checkout_form', 'sha_add_checkout_tracking' );
 
 
 add_action( 'wp_enqueue_scripts', 'sha_load_started_checkout' );
+
+
+add_action('woocommerce_checkout_update_order_meta',function( $order_id, $posted ) {
+    // add current cart token to order metadata
+    $shopagain_cart_token = $_COOKIE['shopagain_cart_token'];
+    if($shopagain_cart_token){
+        $order = wc_get_order( $order_id );
+        $order->update_meta_data( 'shopagain_cart_token', $shopagain_cart_token );
+        $order->save();
+    }
+
+} , 10, 2);
+
+add_action('woocommerce_new_order', function ($order_id) {
+    // generate new cart token
+    $str=rand();
+    $result = md5($str);
+    setcookie("shopagain_cart_token", $result);
+}, 11, 1);
 
 
 /**

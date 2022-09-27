@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain
@@ -19,7 +19,7 @@
  *
  * @package    Shopagain
  * @subpackage Shopagain/includes
- * @author     Softeq <jaman.khan@softeq.com>
+ * @author     Shopagain <vedang@shopagain.io>
  */
 class Shopagain_Loader {
 

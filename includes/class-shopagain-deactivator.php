@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain
@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Shopagain
  * @subpackage Shopagain/includes
- * @author     Softeq <jaman.khan@softeq.com>
+ * @author     Shopagain <vedang@shopagain.io>
  */
 class Shopagain_Deactivator {
 

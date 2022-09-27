@@ -8,7 +8,7 @@
  * @since      1.0.0
  * @package    Shopagain
  * @subpackage Shopagain/includes
- * @author     Softeq <jaman.khan@softeq.com>
+ * @author     Shopagain <vedang@shopagain.io>
  */
 
 use MailPoet\Config\PopulatorData\Templates\Faith;

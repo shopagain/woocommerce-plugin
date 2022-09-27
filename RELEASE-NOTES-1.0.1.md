@@ -2,13 +2,13 @@
 ShopAgain WooCommerce plugin: v1.0.1
 ================================================================================
 
-© 2022 Softeq Development Corporation. All Rights Reserved.
+© 2022 ShopAgain. All Rights Reserved.
 
 Status:       Release
 Release Date: 2022/08/19
 Release Type: GitHub
-Released by:  Jaman Khan <jaman.khan@softeq.com>, Alexey Kudlai <alexey.kudlai@softeq.com>
-Available at: https://github.com/latticeaiinc/woocommerce-plugin
+Released by:  Vedang Dubale <vedang@shopagain.io>, Roshan Singh <roshan@shopagain.io>
+Available at: https://github.com/shopagain/woocommerce-plugin
 
 == Changelog ==
 

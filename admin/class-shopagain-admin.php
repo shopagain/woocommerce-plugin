@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain
@@ -18,7 +18,7 @@
  *
  * @package    Shopagain
  * @subpackage Shopagain/admin
- * @author     Softeq <jaman.khan@softeq.com>
+ * @author     Shopagain <vedang@shopagain.io>
  */
 class Shopagain_Admin {
 

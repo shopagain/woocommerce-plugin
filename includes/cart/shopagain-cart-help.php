@@ -71,7 +71,11 @@ function sha_build_cart_data($cart) {
             'ShippingTotal' => $cart->shipping_total,
             'TaxTotal' => $cart->tax_total,
             'GrandTotal' => $cart->total
-        )
+        ),
+        'full_cart' => WC()->cart,
+        'cart_hash' => WC()->cart->get_cart_hash(),
+        'shopagain_cart_token' => $_COOKIE['shopagain_cart_token'],
+        'checkout_url' => wc_get_checkout_url()
     );
     $sha_cart = array();
     $composite_products = array();

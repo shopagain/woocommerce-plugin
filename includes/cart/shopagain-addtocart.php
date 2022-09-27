@@ -41,7 +41,8 @@ function sha_addtocart_data($added_product, $quantity, $cart)
         'Categories' => isset( $sha_cart['Categories'] ) ? (array) $sha_cart['Categories'] : [],
         'ItemCount' => (int) $sha_cart['Quantity'],
         'Tags' =>  isset( $sha_cart['Tags'] ) ? (array) $sha_cart['Tags'] : [],
-        '$extra' => $sha_cart['$extra']
+        '$extra' => $sha_cart['$extra'],
+        'shopagain_cart_token' => $_COOKIE['shopagain_cart_token']
     );
 }
 
@@ -78,8 +79,11 @@ function sha_track_request($customer_identify, $data)
  */
 function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
 {
-    
-
+    if (!isset($_COOKIE["shopagain_cart_token"])) {
+        $str=rand();
+        $result = md5($str);
+        setcookie("shopagain_cart_token", $result);
+    }
     
     if (!isset($_COOKIE["__shopagain_id"])) {
         setcookie("__shopagain_id", get_option("admin_email"));

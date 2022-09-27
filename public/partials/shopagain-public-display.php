@@ -5,7 +5,7 @@
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain

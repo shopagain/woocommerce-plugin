@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://softeq.com
+ * @link       https://shopagain.io
  * @since      1.0.0
  *
  * @package    Shopagain
@@ -24,16 +24,21 @@
             <div class="sac-content-subtitles">
                 <?php if ( isset( $this->shopgain_options['shopagain_auth_key'] ) ) { ?>
                     <span class="sac-content-title">Your ShopAgain is connected!</span>
-                    <span class="sac-content-subtitle">Head back to the ShopAgain dashboard to continue with next steps for getting your account up and running or to modify any of your ShopAgain + WooCommerce integration settings.</a> </span>
+                    <span class="sac-content-subtitle">
+                    Your store is connected to ShopAgain!<br/>
+                    Head back to your ShopAgain account to complete your account setup and start using ShopAgain.
+                    </span>
                     <div class="connect-buttons">
                         <fieldset class="connect-button">
-                            <a id="wck_manage_settings" class="button button-primary" href="<?= $this->shopagain_url?>woocommerce/" target="_blank">Go to your ShopAgain Page</a>
+                            <a id="wck_manage_settings" class="button button-primary" href="<?= $this->shopagain_url?>woocommerce/" target="_blank">Continue to ShopAgain</a>
                         </fieldset>
                     </div>
                 <?php } else { ?>
                     <span class="sac-content-title">Connect your ShopAgain account</span>
                     <span class="sac-content-subtitle">
-                    SYNC ALL YOUR STORE DATA WITH A SINGLE CLICK</span>
+                    Connect your ShopAgain Account<br/>
+                    Connect your WooCommerce store with ShopAgain to begin syncing data. Sign up for a ShopAgain account before you begin.
+                    </span>
                     <div class="connect-buttons">
                         <fieldset class="connect-button">
                             <a id="wck_oauth_connect" class="button button-primary" href="<?= $this->shopagain_url?>woocommerce/auth/?url=<?= get_home_url(); ?>">Connect Account</a>

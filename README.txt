@@ -1,5 +1,5 @@
 === ShopAgain WooCommerce Connector ===
-Contributors: Softeq
+Contributors: ShopAgain
 Tags: ShopAgain, Woocommerce 
 Requires at least: 4.3
 Tested up to: 6.0.1
