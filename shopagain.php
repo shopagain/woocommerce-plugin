@@ -7,9 +7,9 @@
  * @package           Shopagain
  *
  * @wordpress-plugin
- * Plugin Name:       ShopAgain WooCommerce Connector
+ * Plugin Name:       ShopAgain
  * Plugin URI:        https://shopagain.io/
- * Description:       The plugin helps to transmit your WooCommerce data including abandoned cart data with ShopAgain.
+ * Description:       The plugin helps to transmit your WooCommerce data with ShopAgain.
  * Version:           1.0.0
  * Author:            ShopAgain
  * Author URI:        https://shopagain.io
