@@ -58,7 +58,7 @@ function sha_adjust_cart() {
 
     // Exit if not on cart page or no sha_adjust_cart parameter
     $current_url = sha_build_current_url();
-    $utm_sha_adjust_cart = isset($_GET['sha_adjust_cart']) ? $_GET['sha_adjust_cart'] : '';
+    $utm_sha_adjust_cart = isset($_GET['sha_adjust_cart']) ? sanitize_text_field($_GET['sha_adjust_cart']) : '';
     if($current_url[0]!==wc_get_cart_url() || $utm_sha_adjust_cart==='') {return;}
 
     // Rebuild cart
@@ -85,10 +85,10 @@ function sha_adjust_cart() {
 
 function sha_build_current_url() {
     $server_protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-    $server_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-    $server_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-
-    return explode( '?', $server_protocol . '://' . $server_host . $server_uri );
+    $server_host = sanitize_text_field(getenv( 'HTTP_HOST' ));
+    $server_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
+    $full_url = sanitize_url($server_protocol . '://' . $server_host . $server_uri);
+    return explode( '?', $full_url);
 }
 
 /**
@@ -110,7 +110,9 @@ function sha_add_checkout_tracking($checkout) {
     $email = sha_pull_email($current_user);
     $started_checkout_data = array(
         'email' => $email,
-        'event_data' => $event_data
+        'event_data' => $event_data,
+        'pid' => Shopagain::get_shopagain_pid(),
+        'uid' => Shopagain::get_shopagain_uid(),
     );
     wp_localize_script( 'sha_initiated_checkout', 'sha_checkout', $started_checkout_data );
 }
@@ -123,10 +125,9 @@ add_action( 'wp_enqueue_scripts', 'sha_load_started_checkout' );
 
 add_action('woocommerce_checkout_update_order_meta',function( $order_id, $posted ) {
     // add current cart token to order metadata
-    $shopagain_cart_token = $_COOKIE['shopagain_cart_token'];
-    if($shopagain_cart_token){
+    if(isset($_COOKIE['shopagain_cart_token'])){
         $order = wc_get_order( $order_id );
-        $order->update_meta_data( 'shopagain_cart_token', $shopagain_cart_token );
+        $order->update_meta_data( 'shopagain_cart_token', sanitize_key($_COOKIE['shopagain_cart_token']) );
         $order->save();
     }
 
@@ -134,8 +135,7 @@ add_action('woocommerce_checkout_update_order_meta',function( $order_id, $posted
 
 add_action('woocommerce_new_order', function ($order_id) {
     // generate new cart token
-    $str=rand();
-    $result = md5($str);
+    $result = bin2hex(random_bytes(32));
     setcookie("shopagain_cart_token", $result);
 }, 11, 1);
 

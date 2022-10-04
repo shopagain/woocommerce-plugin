@@ -397,6 +397,51 @@ function get_shopagain_option( $option_value)
     return $value ? $value : False;
 }
 
+function get_shopagain_cookie( $cookie_name )
+{
+    $cookie_prefix = get_shopagain_option( 'cookie_prefix' );
+    $full_cookie_key = $cookie_prefix . "-" . $cookie_name;
+    return $_COOKIE[$full_cookie_key];
+}
+
+function get_shopagain_pid() {
+    $pid_cookie = get_shopagain_cookie( 'pid' );
+    $is_pid_cookie_valid = FALSE;
+    $pid = NULL; 
+    if($pid_cookie){
+        $pid_cookie = stripslashes($pid_cookie);
+        $pid = json_decode($pid_cookie);
+        if($pid && wp_is_uuid($pid)){
+            $is_pid_cookie_valid = TRUE;
+        }
+    }
+
+    if ($is_pid_cookie_valid) {
+        return $pid;
+    } else {
+        return NULL;
+    }  
+}
+
+function get_shopagain_uid() {
+    $pid_cookie = get_shopagain_cookie( 'uid' );
+    $is_pid_cookie_valid = FALSE;
+    $pid = NULL; 
+    if($pid_cookie){
+        $pid_cookie = stripslashes($pid_cookie);
+        $pid = json_decode($pid_cookie);
+        if($pid && wp_is_uuid($pid)){
+            $is_pid_cookie_valid = TRUE;
+        }
+    }
+
+    if ($is_pid_cookie_valid) {
+        return $pid;
+    } else {
+        return NULL;
+    }  
+}
+
 add_action('rest_api_init', function () {
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::EXTENSION_VERSION_ENDPOINT, array(
         'methods' => WP_REST_Server::READABLE,

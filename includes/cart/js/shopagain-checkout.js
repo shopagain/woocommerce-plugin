@@ -94,10 +94,9 @@ window.addEventListener("load", function () {
       'properties': sha_checkout.event_data
     };
 
-    if (sha_checkout.email) {
+    if (sha_checkout.email || sha_checkout.uid) {
       event_object.customer_properties['$email'] = sha_checkout.email;
-    } else if (sha_checkout.exchange_id) {
-      event_object.customer_properties['$exchange_id'] = sha_checkout.exchange_id;
+      event_object.customer_properties['uid'] = sha_checkout.uid;
     } else {
       return;
     }
@@ -113,8 +112,7 @@ window.addEventListener("load", function () {
     makePublicAPIcall('identify', identify_object);
     setShopagainCookie(identify_object.properties);
     SHA.trackStartedCheckout();
-  } else if (klCookie && JSON.parse(klCookie).$exchange_id !== undefined) {
-    sha_checkout.exchange_id = JSON.parse(klCookie).$exchange_id;
+  } else if (sha_checkout.uid !== undefined) {
     SHA.trackStartedCheckout();
   } else if (klCookie && JSON.parse(klCookie).$email !== undefined) {
     sha_checkout.email = JSON.parse(klCookie).$email;

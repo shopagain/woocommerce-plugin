@@ -42,7 +42,7 @@ function sha_addtocart_data($added_product, $quantity, $cart)
         'ItemCount' => (int) $sha_cart['Quantity'],
         'Tags' =>  isset( $sha_cart['Tags'] ) ? (array) $sha_cart['Tags'] : [],
         '$extra' => $sha_cart['$extra'],
-        'shopagain_cart_token' => $_COOKIE['shopagain_cart_token']
+        'shopagain_cart_token' => isset($_COOKIE['shopagain_cart_token']) ? sanitize_key($_COOKIE['shopagain_cart_token']) : NULL
     );
 }
 
@@ -79,27 +79,23 @@ function sha_track_request($customer_identify, $data)
  */
 function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
 {
+    global $current_user;
+    $public_api_key = Shopagain::get_shopagain_option( 'shopagain_auth_key' );
+    if ( ! $public_api_key ) { return; }
+
     if (!isset($_COOKIE["shopagain_cart_token"])) {
-        $str=rand();
-        $result = md5($str);
+        $result = bin2hex(random_bytes(32));
         setcookie("shopagain_cart_token", $result);
     }
-    
-    if (!isset($_COOKIE["__shopagain_id"])) {
-        setcookie("__shopagain_id", get_option("admin_email"));
-        $_COOKIE['__shopagain_id'] = get_option("admin_email");
-        $sha_cookie = $_COOKIE['__shopagain_id'];
-    } else {
-        $sha_cookie = $_COOKIE['__shopagain_id'];
-    }
-    $sha_decoded_cookie = json_decode(base64_decode($sha_cookie), true);
-    if ( isset( $sha_decoded_cookie['$exchange_id'] )) {
-        $customer_identify = array('$exchange_id' => $sha_decoded_cookie['$exchange_id']);
-    } elseif ( isset( $sha_decoded_cookie['$email'] )) {
-        $customer_identify = array('$email' => $sha_decoded_cookie['$email']);
-    } else { $customer_identify = ""; }
 
-    
+    wp_get_current_user();
+    $email = sha_pull_email($current_user);
+
+    $customer_identify = array(
+        'email' => $email,
+        'pid' => Shopagain::get_shopagain_pid(),
+        'uid' => Shopagain::get_shopagain_uid(),
+    );   
     $added_product = wc_get_product( $product_id );
     if ( ! $added_product instanceof WC_Product ) { return; }
 

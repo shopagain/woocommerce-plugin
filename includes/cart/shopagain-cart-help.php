@@ -74,7 +74,7 @@ function sha_build_cart_data($cart) {
         ),
         'full_cart' => WC()->cart,
         'cart_hash' => WC()->cart->get_cart_hash(),
-        'shopagain_cart_token' => $_COOKIE['shopagain_cart_token'],
+        'shopagain_cart_token' => isset($_COOKIE['shopagain_cart_token']) ? sanitize_key($_COOKIE['shopagain_cart_token']) : NULL,
         'checkout_url' => wc_get_checkout_url()
     );
     $sha_cart = array();

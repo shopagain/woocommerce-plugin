@@ -18,8 +18,7 @@
     <div class="sac-content-wrapper">
         <div class="sac-content">
             <div class="sac-logo">
-                <!-- <img src="<?php // echo SHOPAGAIN_URL ?>admin/image/shopagain-logo.png"> -->
-                <img src="https://uploads-ssl.webflow.com/626bdf68454e2d0e6cd4cc79/626bdf68454e2dbe04d4ccbf_SA-redblack-logo.svg">
+                <img src="<?php echo esc_url(plugin_dir_url( dirname( __FILE__ ) ) . 'image/shopagain-logo-full.svg'); ?>">
             </div>
             <div class="sac-content-subtitles">
                 <?php if ( isset( $this->shopgain_options['shopagain_auth_key'] ) ) { ?>
@@ -29,7 +28,7 @@
                     </span>
                     <div class="connect-buttons">
                         <fieldset class="connect-button">
-                            <a id="wck_manage_settings" class="button button-primary" href="<?= $this->shopagain_url?>woocommerce/?url=<?= get_home_url(); ?>" target="_blank">Continue to ShopAgain</a>
+                            <a id="wck_manage_settings" class="button button-primary" href="<?php echo esc_url($this->shopagain_url . "woocommerce/?url=" . get_home_url()); ?>" target="_blank">Continue to ShopAgain</a>
                         </fieldset>
                     </div>
                 <?php } else { ?>
@@ -39,7 +38,7 @@
                     </span>
                     <div class="connect-buttons">
                         <fieldset class="connect-button">
-                            <a id="wck_oauth_connect" class="button button-primary" href="<?= $this->shopagain_url?>woocommerce/auth/?url=<?= get_home_url(); ?>">Connect Account</a>
+                            <a id="wck_oauth_connect" class="button button-primary" href="<?php echo esc_url($this->shopagain_url . "woocommerce/auth/?url=" . get_home_url()); ?>">Connect Account</a>
             
                         </fieldset>
                     </div>
