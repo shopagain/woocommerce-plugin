@@ -84,8 +84,8 @@ function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
     if ( ! $public_api_key ) { return; }
 
     if (!isset($_COOKIE["shopagain_cart_token"])) {
-        $result = bin2hex(random_bytes(32));
-        setcookie("shopagain_cart_token", $result);
+        $result = bin2hex(random_bytes(16));
+        setcookie("shopagain_cart_token", $result, time()+60*60*24*30, '/');
     }
 
     wp_get_current_user();

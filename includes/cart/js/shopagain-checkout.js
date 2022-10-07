@@ -112,7 +112,7 @@ window.addEventListener("load", function () {
     makePublicAPIcall('identify', identify_object);
     setShopagainCookie(identify_object.properties);
     SHA.trackStartedCheckout();
-  } else if (sha_checkout.uid !== undefined) {
+  } else if (sha_checkout.uid) {
     SHA.trackStartedCheckout();
   } else if (klCookie && JSON.parse(klCookie).$email !== undefined) {
     sha_checkout.email = JSON.parse(klCookie).$email;

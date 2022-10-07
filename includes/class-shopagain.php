@@ -320,8 +320,11 @@ class Shopagain {
 
 	public static function get_shopagain_cookie( $cookie_name ){
 		$cookie_prefix = self::get_shopagain_option( 'cookie_prefix' );
+		if(!$cookie_prefix){
+			return NULL;
+		}
 		$full_cookie_key = $cookie_prefix . "-" . $cookie_name;
-		return $_COOKIE[$full_cookie_key];
+		return isset ($_COOKIE[$full_cookie_key]) ? sanitize_text_field($_COOKIE[$full_cookie_key]) : NULL;
 	}
 
 	public static function get_shopagain_pid() {

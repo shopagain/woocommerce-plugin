@@ -135,8 +135,8 @@ add_action('woocommerce_checkout_update_order_meta',function( $order_id, $posted
 
 add_action('woocommerce_new_order', function ($order_id) {
     // generate new cart token
-    $result = bin2hex(random_bytes(32));
-    setcookie("shopagain_cart_token", $result);
+    $result = bin2hex(random_bytes(16));
+    setcookie("shopagain_cart_token", $result, time()+60*60*24*30, '/');
 }, 11, 1);
 
 

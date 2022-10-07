@@ -3,7 +3,7 @@ Contributors: ShopAgain
 Tags: ShopAgain, Woocommerce 
 Requires at least: 4.3
 Tested up to: 6.0.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,3 +34,6 @@ KEY FEATURES
 
 = 1.0.0 =
 * Initial version
+
+= 1.0.1 =
+* Bug fixes

@@ -213,6 +213,26 @@ function wsa_process_resource_args($request, $post_type)
     return $args;
 }
 
+function get_store_timezone()
+{
+    $timezone_string = get_option( 'timezone_string' );
+ 
+    if ( $timezone_string ) {
+        return $timezone_string;
+    }
+ 
+    $offset  = (float) get_option( 'gmt_offset' );
+    $hours   = (int) $offset;
+    $minutes = ( $offset - $hours );
+ 
+    $sign      = ( $offset < 0 ) ? '-' : '+';
+    $abs_hour  = abs( $hours );
+    $abs_mins  = abs( $minutes * 60 );
+    $tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+ 
+    return $tz_offset;
+}
+
 function wsa_get_orders_count(WP_REST_Request $request)
 {
     $validated_request = wsa_validate_request($request);
@@ -273,24 +293,24 @@ function wsa_get_timezone(WP_REST_Request $request)
     $validated_request = wsa_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
-    }
-    $timezone_string = get_option( 'timezone_string' );
- 
-    if ( $timezone_string ) {
-        return $timezone_string;
-    }
- 
-    $offset  = (float) get_option( 'gmt_offset' );
-    $hours   = (int) $offset;
-    $minutes = ( $offset - $hours );
- 
-    $sign      = ( $offset < 0 ) ? '-' : '+';
-    $abs_hour  = abs( $hours );
-    $abs_mins  = abs( $minutes * 60 );
-    $tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
- 
-    return $tz_offset;
+    } 
+    return get_store_timezone();
 }
+
+function wsa_get_store_details(WP_REST_Request $request)
+{
+    $validated_request = wsa_validate_request($request);
+    if ($validated_request['error'] === true) {
+        return $validated_request;
+    }
+
+    return array(
+        'tz_offset' => get_store_timezone(),
+        'order_received_url' => wc_get_endpoint_url( 'order-received'),
+        'cart_url' => wc_get_cart_url() 
+    );
+}
+
 
 /**
  * Handle GET request to /shopgain/v1/version. Returns the current version and if
@@ -400,8 +420,11 @@ function get_shopagain_option( $option_value)
 function get_shopagain_cookie( $cookie_name )
 {
     $cookie_prefix = get_shopagain_option( 'cookie_prefix' );
+    if(!$cookie_prefix){
+        return NULL;
+    }
     $full_cookie_key = $cookie_prefix . "-" . $cookie_name;
-    return $_COOKIE[$full_cookie_key];
+    return isset ($_COOKIE[$full_cookie_key]) ? sanitize_text_field($_COOKIE[$full_cookie_key]) : NULL;
 }
 
 function get_shopagain_pid() {
@@ -500,6 +523,11 @@ add_action('rest_api_init', function () {
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'timezone', array(
         'methods' => WP_REST_Server::READABLE,
         'callback' => 'wsa_get_timezone',
+        'permission_callback' => '__return_true',
+    ));
+    register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'store_details', array(
+        'methods' => WP_REST_Server::READABLE,
+        'callback' => 'wsa_get_store_details',
         'permission_callback' => '__return_true',
     ));
 });
