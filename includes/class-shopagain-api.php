@@ -213,7 +213,7 @@ function shopagain_process_resource_args($request, $post_type)
     return $args;
 }
 
-function get_store_timezone()
+function shopagain_get_store_timezone()
 {
     $timezone_string = get_option( 'timezone_string' );
  
@@ -294,7 +294,7 @@ function shopagain_get_timezone(WP_REST_Request $request)
     if ($validated_request['error'] === true) {
         return $validated_request;
     } 
-    return get_store_timezone();
+    return shopagain_get_store_timezone();
 }
 
 function shopagain_get_store_details(WP_REST_Request $request)
@@ -305,7 +305,7 @@ function shopagain_get_store_details(WP_REST_Request $request)
     }
 
     return array(
-        'tz_offset' => get_store_timezone(),
+        'tz_offset' => shopagain_get_store_timezone(),
         'order_received_url' => wc_get_endpoint_url( 'order-received'),
         'cart_url' => wc_get_cart_url() 
     );
