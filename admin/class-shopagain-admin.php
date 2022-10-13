@@ -129,7 +129,7 @@ class Shopagain_Admin {
      */
     public function add_shopagain_settings_oauth()
     {	
-        $this->add_menu_page( 'wsa_settings_oauth' );
+        $this->add_menu_page( 'shopagain_settings_oauth' );
     }
 
 
@@ -153,7 +153,7 @@ class Shopagain_Admin {
     /**
      * Settings page content for new authentication process.
      */
-    public function wsa_settings_oauth()
+    public function shopagain_settings_oauth()
     {	
 	        include_once( __DIR__ . '/partials/shopagain-admin-display.php' );
     }

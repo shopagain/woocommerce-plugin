@@ -65,7 +65,7 @@ class Shopagain_API
 
 }
 
-function wsa_count_loop(WP_Query $loop)
+function shopagain_count_loop(WP_Query $loop)
 {
     $loop_ids = array();
     while ($loop->have_posts()) {
@@ -76,12 +76,12 @@ function wsa_count_loop(WP_Query $loop)
     return $loop_ids;
 }
 
-function wsa_validate_request($request)
+function shopagain_validate_request($request)
 {
     $consumer_key = $request->get_param('consumer_key');
     $consumer_secret = $request->get_param('consumer_secret');
     if (empty($consumer_key) || empty($consumer_secret)) {
-        return wsa_validation_response(
+        return shopagain_validation_response(
             true,
             Shopagain_API::STATUS_CODE_BAD_REQUEST,
             Shopagain_API::ERROR_KEYS_NOT_PASSED,
@@ -104,14 +104,14 @@ function wsa_validate_request($request)
     );
 
     if ($user->consumer_secret == $consumer_secret) {
-        return wsa_validation_response(
+        return shopagain_validation_response(
             false,
             Shopagain_API::STATUS_CODE_HTTP_OK,
             null,
             true
         );
     }
-    return wsa_validation_response(
+    return shopagain_validation_response(
         true,
         Shopagain_API::STATUS_CODE_AUTHORIZATION_ERROR,
         Shopagain_API::ERROR_CONSUMER_KEY_NOT_FOUND,
@@ -125,7 +125,7 @@ function wsa_validate_request($request)
  * @param WP_REST_Request $request Incoming request object.
  * @return bool|WP_Error True if validation succeeds, otherwise WP_Error to be handled by rest server.
  */
-function wsa_validate_request_v2( WP_REST_Request $request )
+function shopagain_validate_request_v2( WP_REST_Request $request )
 {
     $consumer_key = $request->get_param( 'consumer_key' );
     $consumer_secret = $request->get_param( 'consumer_secret' );
@@ -177,7 +177,7 @@ function wsa_validate_request_v2( WP_REST_Request $request )
     );
 }
 
-function wsa_validation_response($error, $code, $reason, $success)
+function shopagain_validation_response($error, $code, $reason, $success)
 {
     return array(
         Shopagain_API::API_RESPONSE_ERROR => $error,
@@ -187,7 +187,7 @@ function wsa_validation_response($error, $code, $reason, $success)
     );
 }
 
-function wsa_process_resource_args($request, $post_type)
+function shopagain_process_resource_args($request, $post_type)
 {
     $page_limit = $request->get_param('page_limit');
     if (empty($page_limit)) {
@@ -233,73 +233,73 @@ function get_store_timezone()
     return $tz_offset;
 }
 
-function wsa_get_orders_count(WP_REST_Request $request)
+function shopagain_get_orders_count(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     }
 
-    $args = wsa_process_resource_args($request, 'shop_order');
+    $args = shopagain_process_resource_args($request, 'shop_order');
 
     $loop = new WP_Query($args);
-    $data = wsa_count_loop($loop);
+    $data = shopagain_count_loop($loop);
     return array('order_count' => $loop->found_posts);
 }
 
-function wsa_get_products_count(WP_REST_Request $request)
+function shopagain_get_products_count(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     }
 
-    $args = wsa_process_resource_args($request, 'product');
+    $args = shopagain_process_resource_args($request, 'product');
     $loop = new WP_Query($args);
-    $data = wsa_count_loop($loop);
+    $data = shopagain_count_loop($loop);
     return array('product_count' => $loop->found_posts);
 }
 
-function wsa_get_products(WP_REST_Request $request)
+function shopagain_get_products(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     }
 
-    $args = wsa_process_resource_args($request, 'product');
+    $args = shopagain_process_resource_args($request, 'product');
 
     $loop = new WP_Query($args);
-    $data = wsa_count_loop($loop);
+    $data = shopagain_count_loop($loop);
     return array('product_ids' => $data);
 }
 
-function wsa_get_orders(WP_REST_Request $request)
+function shopagain_get_orders(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     }
 
-    $args = wsa_process_resource_args($request, 'shop_order');
+    $args = shopagain_process_resource_args($request, 'shop_order');
 
     $loop = new WP_Query($args);
-    $data = wsa_count_loop($loop);
+    $data = shopagain_count_loop($loop);
     return array('order_ids' => $data);
 }
 
-function wsa_get_timezone(WP_REST_Request $request)
+function shopagain_get_timezone(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     } 
     return get_store_timezone();
 }
 
-function wsa_get_store_details(WP_REST_Request $request)
+function shopagain_get_store_details(WP_REST_Request $request)
 {
-    $validated_request = wsa_validate_request($request);
+    $validated_request = shopagain_validate_request($request);
     if ($validated_request['error'] === true) {
         return $validated_request;
     }
@@ -318,7 +318,7 @@ function wsa_get_store_details(WP_REST_Request $request)
  *
  * @return array
  */
-function wsa_get_extension_version()
+function shopagain_get_extension_version()
 {
     return Shopagain_API::build_version_payload();
 }
@@ -329,7 +329,7 @@ function wsa_get_extension_version()
  * @param WP_REST_Request $request
  * @return bool|mixed|void|WP_Error
  */
-function wsa_update_options( WP_REST_Request $request )
+function shopagain_update_options( WP_REST_Request $request )
 {
     $body = json_decode( $request->get_body(), $assoc = true );
     if ( ! $body ) {
@@ -369,7 +369,7 @@ function wsa_update_options( WP_REST_Request $request )
  *
  * @return array Shopgain plugin options.
  */
-function wsa_get_options()
+function shopagain_get_options()
 {
     return get_option( 'shopagain_auth' );
 }
@@ -380,7 +380,7 @@ function wsa_get_options()
  * @param WP_REST_Request $request Incoming request object.
  * @return WP_Error|WP_REST_Response
  */
-function wsa_disable_plugin( WP_REST_Request $request )
+function shopagain_disable_plugin( WP_REST_Request $request )
 {
     $body = json_decode( $request->get_body(), $assoc = true );
     // Verify body contains required data.
@@ -410,7 +410,7 @@ function wsa_disable_plugin( WP_REST_Request $request )
 function get_shopagain_option( $option_value)
 {   
 
-    $option = wsa_get_options();
+    $option = shopagain_get_options();
     if ( isset( $option[ $option_value ] ) ) {
         $value = $option[ $option_value ];
     } 
@@ -468,22 +468,22 @@ function get_shopagain_uid() {
 add_action('rest_api_init', function () {
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::EXTENSION_VERSION_ENDPOINT, array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_extension_version',
+        'callback' => 'shopagain_get_extension_version',
         'permission_callback' => '__return_true',
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'orders/count', array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_orders_count',
+        'callback' => 'shopagain_get_orders_count',
         'permission_callback' => '__return_true',
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'products/count', array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_products_count',
+        'callback' => 'shopagain_get_products_count',
         'permission_callback' => '__return_true',
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::ORDERS_ENDPOINT, array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_orders',
+        'callback' => 'shopagain_get_orders',
         'args' => array(
             'id' => array(
                 'validate_callback' => 'is_numeric'
@@ -493,7 +493,7 @@ add_action('rest_api_init', function () {
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::PRODUCTS_ENDPOINT, array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_products',
+        'callback' => 'shopagain_get_products',
         'args' => array(
             'id' => array(
                 'validate_callback' => 'is_numeric'
@@ -504,30 +504,30 @@ add_action('rest_api_init', function () {
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::OPTIONS_ENDPOINT, array(
         array(
             'methods' => WP_REST_Server::CREATABLE,
-            'callback' => 'wsa_update_options',
-            'permission_callback' => 'wsa_validate_request_v2',
+            'callback' => 'shopagain_update_options',
+            'permission_callback' => 'shopagain_validate_request_v2',
         ),
         array(
             'methods' => WP_REST_Server::READABLE,
-            'callback' => 'wsa_get_options',
-            'permission_callback' => 'wsa_validate_request_v2',
+            'callback' => 'shopagain_get_options',
+            'permission_callback' => 'shopagain_validate_request_v2',
         )
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::DISABLE_ENDPOINT, array(
         array(
             'methods' => WP_REST_Server::CREATABLE,
-            'callback' => 'wsa_disable_plugin',
-            'permission_callback' => 'wsa_validate_request_v2',
+            'callback' => 'shopagain_disable_plugin',
+            'permission_callback' => 'shopagain_validate_request_v2',
         )
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'timezone', array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_timezone',
+        'callback' => 'shopagain_get_timezone',
         'permission_callback' => '__return_true',
     ));
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, 'store_details', array(
         'methods' => WP_REST_Server::READABLE,
-        'callback' => 'wsa_get_store_details',
+        'callback' => 'shopagain_get_store_details',
         'permission_callback' => '__return_true',
     ));
 });
