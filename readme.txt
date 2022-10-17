@@ -1,42 +1,32 @@
-=== ShopAgain WooCommerce Connector ===
-Contributors: ShopAgain
-Tags: ShopAgain, Woocommerce 
+=== ShopAgain ===
+Contributors: roshanshopagain
+Tags: Email & SMS flows,Product Recommendations, Popups,Woocommerce
 Requires at least: 4.3
 Tested up to: 6.0.1
+Requires PHP: 7.4.3
 Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easy to integrate the plugin with your WooCommerce store and sync all your store data with a single click.
-
 == Description ==
-The plugin allows to integrate ShopAgain and WooCommerce to receive the following data:
-Product, Product Collection, Cart/Checkout data, Customer, Order Discount/Coupon codes
+ShopAgain is an SMS automation platform for e-commerce stores. We make SMS and email marketing simple and painless, no marketing experience required. Convert your one-time shoppers into repeat customers and repeat customers into loyal fans with automated SMS and email marketing campaigns.
 
-KEY FEATURES
-- Connect to WooCommerce stores
-- Connect to ShopAgain accounts
-- Automated WooCommerce REST API authentication
-- Send cart/checkout data
+**Email and SMS marketing**
 
-== Installation ==
+* Personalized SMS messages (supports MMS for US locations)
+* Drag and drop email template builder
+* Vast library of stunning email templates - for desktop and mobile
+* Tools for building the subscriber list
 
-1. Download the plugin shopagain.1.0.0.zip
-2. Go to WordPress Dashboard-Plugins-Add New
-3. Click on Upload Plugin link from top
-4. Upload the downloaded shopagain.1.0.0.zip file and click on Install Now
-5. After installation, click on Activate Plugin link to activate the plugin.
-6. Click on ShopAgain in your left-menu, then click Connect Account.
-7. Click through two screens to approve access and finish setting up your integration.
+**Automated segmentation for better targeting**
 
+* Prebuilt 25+ segments based on purchases, activity, and lifecycle stage
+* Identify and connect with at-risk customers before they churn
+* Automatically identify segments like most likely to buy, high value, low spenders, and loyal customers
 
-== Changelog ==
+**AI-powered product recommendations**
 
-= 1.0.0 =
-* Initial version
+* Easily integrate product recommendations into your marketing emails
+* Increase your Average Order Value
+* Use AI-powered cross-sell and upsell
 
-= 1.0.1 =
-* Bug fixes
-
-= 1.0.2 =
-* Bug fixes
