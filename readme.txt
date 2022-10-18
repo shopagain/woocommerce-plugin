@@ -8,8 +8,10 @@ Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+ShopAgain is a marketing automation and product recommendation platform for WooCommerce stores.
+
 == Description ==
-ShopAgain is an SMS automation platform for e-commerce stores. We make SMS and email marketing simple and painless, no marketing experience required. Convert your one-time shoppers into repeat customers and repeat customers into loyal fans with automated SMS and email marketing campaigns.
+ShopAgain is a marketing automation and product recommendation platform for WooCommerce stores. We make SMS and email marketing simple and painless, no marketing experience required. Convert your one-time shoppers into repeat customers and repeat customers into loyal fans with automated SMS and email marketing campaigns.
 
 **Email and SMS marketing**
 
