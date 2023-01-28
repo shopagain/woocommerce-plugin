@@ -21,16 +21,48 @@
  * Attach event listeners to save billing fields.
  */
 
-var identify_object = {
-  'token': public_key.token,
+var shopagainLocalStorage = {
+    // use this to get or set items in localstorage
+    getObject: function () {
+        const objValueResp = localStorage.getItem(shopagain_localstorage_key);
+        let objValue = {};
+        try {
+            objValue = JSON.parse(objValueResp);
+        }
+        catch (e) {
+            console.log(e);
+        }
+        if (typeof objValue !== "object" || objValue === null) {
+            objValue = {};
+        }
+        return objValue;
+    },
+    set: function (key, value) {
+        const objValue = this.getObject();
+        objValue[key] = value;
+        localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
+    },
+    del: function (key) {
+        const objValue = this.getObject();
+        delete objValue[key];
+        localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
+    },
+    get: function (key) {
+        const objValue = this.getObject();
+        return objValue[key];
+    },
+}
+
+var shopagain_identify_object = {
+  'token': shopagain_public_key.token,
   'properties': {}
 };
 
 var shopagain_cookie_id = '__shopagain_id';
 
-function makePublicAPIcall(endpoint, event_data) {
+function shopagainMakePublicAPIcall(endpoint, event_data) {
   data_param = btoa(unescape(encodeURIComponent(JSON.stringify(event_data))));
-  jQuery.get(public_key.callback_url + endpoint + '?data=' + data_param);
+  jQuery.get(shopagain_public_key.callback_url + endpoint + '?data=' + data_param);
 }
 
 function getShopagainCookie() {
@@ -70,9 +102,9 @@ function shIdentifyBillingField() {
             [nameType]: jQuery.trim(jQuery(this).val())
           };
           setShopagainCookie(identify_properties);
-          identify_object.properties = identify_properties;
+          shopagain_identify_object.properties = identify_properties;
 
-          makePublicAPIcall('identify', identify_object);
+          shopagainMakePublicAPIcall('identify', shopagain_identify_object);
         }
       })
     })();
@@ -84,35 +116,35 @@ window.addEventListener("load", function () {
   if (typeof sha_checkout === 'undefined') {
     return;
   }
-
+  var uid = shopagainLocalStorage.get("uid");
   var SHA = SHA || {};
   SHA.trackStartedCheckout = function () {
     var event_object = {
-      'token': public_key.token,
+      'token': shopagain_public_key.token,
       'event': '$started_checkout',
       'customer_properties': {},
       'properties': sha_checkout.event_data
     };
 
-    if (sha_checkout.email || sha_checkout.uid) {
+    if (sha_checkout.email || uid) {
       event_object.customer_properties['$email'] = sha_checkout.email;
-      event_object.customer_properties['uid'] = sha_checkout.uid;
+      event_object.customer_properties['uid'] = uid;
     } else {
       return;
     }
 
-    makePublicAPIcall('track', event_object);
+    shopagainMakePublicAPIcall('track', event_object);
   };
 
   var klCookie = getShopagainCookie();
   if (sha_checkout.email !== "") {
-    identify_object.properties = {
+    shopagain_identify_object.properties = {
       '$email': sha_checkout.email
     };
-    makePublicAPIcall('identify', identify_object);
-    setShopagainCookie(identify_object.properties);
+    shopagainMakePublicAPIcall('identify', shopagain_identify_object);
+    setShopagainCookie(shopagain_identify_object.properties);
     SHA.trackStartedCheckout();
-  } else if (sha_checkout.uid) {
+  } else if (uid) {
     SHA.trackStartedCheckout();
   } else if (klCookie && JSON.parse(klCookie).$email !== undefined) {
     sha_checkout.email = JSON.parse(klCookie).$email;
@@ -138,8 +170,8 @@ window.addEventListener("load", function () {
 
           setShopagainCookie(params);
           sha_checkout.email = params.$email;
-          identify_object.properties = params;
-          makePublicAPIcall('identify', identify_object);
+          shopagain_identify_object.properties = params;
+          shopagainMakePublicAPIcall('identify', shopagain_identify_object);
           SHA.trackStartedCheckout();
         }
       });

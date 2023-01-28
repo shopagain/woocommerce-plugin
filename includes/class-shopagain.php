@@ -112,14 +112,15 @@ class Shopagain {
 				if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
 					return;
 				}
+				$shopagain_script_url = Shopagain::get_shopagain_option( 'shopagain_script_url' );
+				if($shopagain_script_url == ''){
+					return;
+				}
+
 				$api_url = Shopagain::get_shopagain_option( 'api_url' );
 				if($api_url == ''){
 					return;
 				}
-
-				$shopagain_script_url = plugins_url( '/js/shopagain_script.min.js', __FILE__ );
-				$shopagain_timeme_script_url = plugins_url( '/js/timeme.js', __FILE__ );
-				$shopagain_widget_script_url = plugins_url( '/js/widgets.js', __FILE__ );
 
 				$obj = get_queried_object();
 				$handle = '';
@@ -129,8 +130,6 @@ class Shopagain {
 
 				
 				$params = array(
-					'store' => 'woocommerce',
-					'webkey' => $public_api_key,
 					'is_shop' => is_shop(),
 					'is_product_category' => is_product_category(),
 					'is_product_tag' => is_product_tag(),
@@ -143,12 +142,8 @@ class Shopagain {
 					//'wp_query' => get_queried_object()
 				);
 				
-				$shopagain_script_url  = $shopagain_script_url . "?" . http_build_query($params);
-				
-				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );
-				wp_localize_script( 'shopagain_script_js', 'LATTICE_API', $api_url);
-				wp_localize_script( 'shopagain_script_js', 'shopagain_timeme_script_url', $shopagain_timeme_script_url);
-				wp_localize_script( 'shopagain_script_js', 'shopagain_widget_script_url', $shopagain_widget_script_url);			
+				$shopagain_script_url  = $shopagain_script_url . "&" . http_build_query($params);
+				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );		
 			}
         }
 	}
@@ -327,41 +322,4 @@ class Shopagain {
 		return isset ($_COOKIE[$full_cookie_key]) ? sanitize_text_field($_COOKIE[$full_cookie_key]) : NULL;
 	}
 
-	public static function get_shopagain_pid() {
-		$pid_cookie = self::get_shopagain_cookie( 'pid' );
-		$is_pid_cookie_valid = FALSE;
-		$pid = NULL; 
-		if($pid_cookie){
-			$pid_cookie = stripslashes($pid_cookie);
-			$pid = json_decode($pid_cookie);
-			if($pid && wp_is_uuid($pid)){
-				$is_pid_cookie_valid = TRUE;
-			}
-		}
-	
-		if ($is_pid_cookie_valid) {
-			return $pid;
-		} else {
-			return NULL;
-		}  
-	}
-
-	public static function get_shopagain_uid() {
-		$pid_cookie = self::get_shopagain_cookie( 'uid' );
-		$is_pid_cookie_valid = FALSE;
-		$pid = NULL; 
-		if($pid_cookie){
-			$pid_cookie = stripslashes($pid_cookie);
-			$pid = json_decode($pid_cookie);
-			if($pid && wp_is_uuid($pid)){
-				$is_pid_cookie_valid = TRUE;
-			}
-		}
-	
-		if ($is_pid_cookie_valid) {
-			return $pid;
-		} else {
-			return NULL;
-		}  
-	}
 }

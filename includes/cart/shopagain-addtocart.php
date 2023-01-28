@@ -1,6 +1,13 @@
 <?php
 
 add_action( 'woocommerce_add_to_cart', 'sha_added_to_cart_event', 25, 3 );
+add_action( 'init', 'set_shopagain_cookie');
+function set_shopagain_cookie() {
+    if (!isset($_COOKIE["shopagain_cart_token"])) {
+        $result = bin2hex(random_bytes(16));
+        setcookie("shopagain_cart_token", $result, time()+60*60*24*30, '/');
+    }
+}
 
 /**
  * Handle WP_Error
@@ -93,9 +100,18 @@ function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
 
     $customer_identify = array(
         'email' => $email,
-        'pid' => Shopagain::get_shopagain_pid(),
-        'uid' => Shopagain::get_shopagain_uid(),
-    );   
+    );
+
+    if ( ! isset( $_COOKIE['__shopagain_id'] )) { return; }
+    $kl_cookie = $_COOKIE['__kla_id'];
+    $kl_decoded_cookie = json_decode(base64_decode($kl_cookie), true);
+    if ( isset( $kl_decoded_cookie['$exchange_id'] )) {
+        $customer_identify = array('$exchange_id' => $kl_decoded_cookie['$exchange_id']);
+    } elseif ( isset( $kl_decoded_cookie['$email'] )) {
+        $customer_identify = array('$email' => $kl_decoded_cookie['$email']);
+    } else { return; }
+
+
     $added_product = wc_get_product( $product_id );
     if ( ! $added_product instanceof WC_Product ) { return; }
 
