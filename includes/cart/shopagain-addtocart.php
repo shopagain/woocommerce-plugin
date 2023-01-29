@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'woocommerce_add_to_cart', 'sha_added_to_cart_event', 25, 3 );
+add_action( 'woocommerce_add_to_cart', 'shopagain_added_to_cart_event', 25, 3 );
 
 /**
  * Handle WP_Error
@@ -8,7 +8,7 @@ add_action( 'woocommerce_add_to_cart', 'sha_added_to_cart_event', 25, 3 );
  * @param string $list String of product terms.
  * @return array
  */
-function sha_strip_explode( $list ) {
+function shopagain_strip_explode( $list ) {
     if ( $list instanceof WP_Error ) { return []; }
     return explode(', ', strip_tags( $list ));
 }
@@ -20,14 +20,14 @@ function sha_strip_explode( $list ) {
  * @param object $cart Cart data.
  * @return array
  */
-function sha_addtocart_data($added_product, $quantity, $cart)
+function shopagain_addtocart_data($added_product, $quantity, $cart)
 {
-    $sha_cart = sha_build_cart_data( $cart );
+    $sha_cart = shopagain_build_cart_data( $cart );
     $added_product_id = $added_product->get_id();
 
     return array(
         '$value' => (float) $cart->total,
-        'AddedItemCategories' => (array) sha_strip_explode(wc_get_product_category_list( $added_product_id )),
+        'AddedItemCategories' => (array) shopagain_strip_explode(wc_get_product_category_list( $added_product_id )),
         'AddedItemDescription' => (string) $added_product->get_description(),
         'AddedItemImageURL' => (string) wp_get_attachment_url(get_post_thumbnail_id($added_product_id)),
         'AddedItemPrice' => (float) $added_product->get_price(),
@@ -35,7 +35,7 @@ function sha_addtocart_data($added_product, $quantity, $cart)
         'AddedItemProductID' => (int) $added_product_id,
         'AddedItemProductName' => (string) $added_product->get_name(),
         'AddedItemSKU' => (string) $added_product->get_sku(),
-        'AddedItemTags' => (array) sha_strip_explode(wc_get_product_tag_list( $added_product_id )),
+        'AddedItemTags' => (array) shopagain_strip_explode(wc_get_product_tag_list( $added_product_id )),
         'AddedItemURL' => (string) $added_product->get_permalink(),
         'ItemNames' => (array) $sha_cart['ItemNames'],
         'Categories' => isset( $sha_cart['Categories'] ) ? (array) $sha_cart['Categories'] : [],
@@ -53,7 +53,7 @@ function sha_addtocart_data($added_product, $quantity, $cart)
  * @param array $data Cart and AddedItem data.
  * @returns null
  */
-function sha_track_request($customer_identify, $data)
+function shopagain_track_request($customer_identify, $data)
 {
     $public_api_key = Shopagain::get_shopagain_option( 'shopagain_auth_key' );
     if ( ! $public_api_key ) { return; }
@@ -77,7 +77,7 @@ function sha_track_request($customer_identify, $data)
  * @param int $quantity Quantity of item added to cart.
  * @returns null
  */
-function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
+function shopagain_added_to_cart_event($cart_item_key, $product_id, $quantity)
 {
     global $current_user;
     $public_api_key = Shopagain::get_shopagain_option( 'shopagain_auth_key' );
@@ -89,7 +89,7 @@ function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
     }
 
     wp_get_current_user();
-    $email = sha_pull_email($current_user);
+    $email = shopagain_pull_email($current_user);
 
     $customer_identify = array(
         'email' => $email,
@@ -99,5 +99,5 @@ function sha_added_to_cart_event($cart_item_key, $product_id, $quantity)
     $added_product = wc_get_product( $product_id );
     if ( ! $added_product instanceof WC_Product ) { return; }
 
-    sha_track_request($customer_identify, sha_addtocart_data($added_product, $quantity, WC()->cart));
+    shopagain_track_request($customer_identify, shopagain_addtocart_data($added_product, $quantity, WC()->cart));
 }

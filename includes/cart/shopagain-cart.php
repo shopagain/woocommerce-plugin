@@ -12,7 +12,7 @@
 
 if ( ! defined( 'WPINC' ) ) exit; // Exit if accessed directly
 
-function coonect_sha_composite_products_cart ($composite_products) {
+function coonect_shopagain_composite_products_cart ($composite_products) {
     foreach ($composite_products as $product) {
         $container = array();
         foreach ($product as $i => $v) {
@@ -36,7 +36,7 @@ function coonect_sha_composite_products_cart ($composite_products) {
     }
 }
 
-function sha_pull_email($current_user) {
+function shopagain_pull_email($current_user) {
     $email = '';
     if ($current_user->user_email) {
         $email = $current_user->user_email;
@@ -50,22 +50,22 @@ function sha_pull_email($current_user) {
     return $email;
 }
 
-function sha_adjust_cart() {
+function shopagain_adjust_cart() {
 
     // Exit if in back-end
     if(is_admin()){return;}
     global $woocommerce;
 
-    // Exit if not on cart page or no sha_adjust_cart parameter
-    $current_url = sha_build_current_url();
-    $utm_sha_adjust_cart = isset($_GET['sha_adjust_cart']) ? sanitize_text_field($_GET['sha_adjust_cart']) : '';
-    if($current_url[0]!==wc_get_cart_url() || $utm_sha_adjust_cart==='') {return;}
+    // Exit if not on cart page or no shopagain_adjust_cart parameter
+    $current_url = shopagain_build_current_url();
+    $utm_shopagain_adjust_cart = isset($_GET['shopagain_adjust_cart']) ? sanitize_text_field($_GET['shopagain_adjust_cart']) : '';
+    if($current_url[0]!==wc_get_cart_url() || $utm_shopagain_adjust_cart==='') {return;}
 
     // Rebuild cart
     $woocommerce->cart->empty_cart(true);
     $woocommerce->cart->get_cart();
 
-    $sha_cart = json_decode(base64_decode($utm_sha_adjust_cart), true);
+    $sha_cart = json_decode(base64_decode($utm_shopagain_adjust_cart), true);
     $composite_products = $sha_cart['composite'];
     $normal_products = $sha_cart['normal_products'];
 
@@ -74,7 +74,7 @@ function sha_adjust_cart() {
     }
 
     if ( class_exists( 'WC_Composite_Products' ) ) {
-        coonect_sha_composite_products_cart($composite_products);
+        coonect_shopagain_composite_products_cart($composite_products);
     }
 
     $carturl = wc_get_cart_url();
@@ -83,7 +83,7 @@ function sha_adjust_cart() {
     }
 }
 
-function sha_build_current_url() {
+function shopagain_build_current_url() {
     $server_protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
     $server_host = sanitize_text_field(getenv( 'HTTP_HOST' ));
     $server_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
@@ -97,30 +97,30 @@ function sha_build_current_url() {
  * @access public
  * @return void
  */
-function sha_add_checkout_tracking($checkout) {
+function shopagain_add_checkout_tracking($checkout) {
     global $current_user;
     wp_reset_query();
     wp_get_current_user();
     $cart = WC()->cart;
-    $event_data = sha_build_cart_data( $cart );
+    $event_data = shopagain_build_cart_data( $cart );
     if ( empty($event_data['$extra']['Items']) ) { return; }
     $event_data['$service'] = 'woocommerce';
     unset($event_data['Tags']);
     unset($event_data['Quantity']);
-    $email = sha_pull_email($current_user);
+    $email = shopagain_pull_email($current_user);
     $started_checkout_data = array(
         'email' => $email,
         'event_data' => $event_data,
         'pid' => Shopagain::get_shopagain_pid(),
         'uid' => Shopagain::get_shopagain_uid(),
     );
-    wp_localize_script( 'sha_initiated_checkout', 'sha_checkout', $started_checkout_data );
+    wp_localize_script( 'shopagain_initiated_checkout', 'shopagain_checkout', $started_checkout_data );
 }
 
-add_action( 'woocommerce_after_checkout_form', 'sha_add_checkout_tracking' );
+add_action( 'woocommerce_after_checkout_form', 'shopagain_add_checkout_tracking' );
 
 
-add_action( 'wp_enqueue_scripts', 'sha_load_started_checkout' );
+add_action( 'wp_enqueue_scripts', 'shopagain_load_started_checkout' );
 
 
 add_action('woocommerce_checkout_update_order_meta',function( $order_id, $posted ) {
@@ -144,13 +144,13 @@ add_action('woocommerce_new_order', function ($order_id) {
  *  Check if page is a checkout page, if so load the Started Checkout javascript file.
  *
  */
-function sha_load_started_checkout() {
+function shopagain_load_started_checkout() {
     $token = Shopagain::get_shopagain_option( 'shopagain_auth_key' );
     if ( ! $token ) { return; }
     if ( is_checkout() ) {
-        wp_enqueue_script( 'sha_initiated_checkout', plugins_url( '/js/shopagain-checkout.js', __FILE__ ), null, null, true );
-        wp_localize_script( 'sha_initiated_checkout', 'public_key', array( 'token' => $token, "callback_url" => Shopagain::get_shopagain_option( 'shopagain_webhook_url' )));
+        wp_enqueue_script( 'shopagain_initiated_checkout', plugins_url( '/js/shopagain-checkout.js', __FILE__ ), null, null, true );
+        wp_localize_script( 'shopagain_initiated_checkout', 'shopagain_public_key', array( 'token' => $token, "callback_url" => Shopagain::get_shopagain_option( 'shopagain_webhook_url' )));
     }
 }
 
-add_action( 'wp_loaded', 'sha_adjust_cart');
+add_action( 'wp_loaded', 'shopagain_adjust_cart');
