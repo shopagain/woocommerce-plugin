@@ -2,7 +2,7 @@
  * ShopAgain Viewed Product
  *
  * Incoming product object
- * @typedef {Object} item
+ * @typedef {Object} shopagain_item
  *   @property {string} title - Product name
  *   @property {int} product_id - Parent product ID
  *   @property {int} variant_id - Product ID
@@ -17,19 +17,19 @@
  *
  */
 
-var _learnq = _learnq || [];
+var _shopagainq = _shopagainq || [];
 
-var item = {
-    'Title': item.title,
-    'ItemId': parseInt(item.product_id),
-    'variantId': parseInt(item.variant_id),
-    'Categories': item.categories,
-    'ImageUrl': item.image_url,
-    'Url': item.url,
+var shopagain_item = {
+    'Title': shopagain_item.title,
+    'ItemId': parseInt(shopagain_item.product_id),
+    'variantId': parseInt(shopagain_item.variant_id),
+    'Categories': shopagain_item.categories,
+    'ImageUrl': shopagain_item.image_url,
+    'Url': shopagain_item.url,
     'Metadata': {
-        'Price': parseFloat(item.price),
+        'Price': parseFloat(shopagain_item.price),
     }
 };
 
-_learnq.push(['track', 'Viewed Product', item]);
-_learnq.push(['trackViewedItem', item]);
+_shopagainq.push(['track', 'Viewed Product', shopagain_item]);
+_shopagainq.push(['trackViewedItem', shopagain_item]);

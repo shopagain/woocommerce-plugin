@@ -10,7 +10,7 @@
  * Plugin Name:       ShopAgain
  * Plugin URI:        https://shopagain.io/
  * Description:       The plugin helps to sync your WooCommerce data with ShopAgain.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            ShopAgain
  * Author URI:        https://shopagain.io
  * License:           GPL-2.0+

@@ -1,11 +1,11 @@
 <?php
-add_action( 'wp_enqueue_scripts', 'sha_load_product', 12 );
+add_action( 'wp_enqueue_scripts', 'shopagain_load_product', 12 );
 
 /**
  * If on product page, get properties for Viewed Product metric. Enqueue viewed product
  * javascript and pass event data to script.
  */
-function sha_load_product() {
+function shopagain_load_product() {
 	if ( is_product() ) {
 		$product = wc_get_product();
 		$parent_product_id = $product->get_parent_id();
@@ -29,7 +29,7 @@ function sha_load_product() {
 			'categories' => $categories
 		);
 
-		wp_enqueue_script( 'wck_viewed_product', plugins_url( '/js/shopagain-product.js', __FILE__ ), null, null, true );
-		wp_localize_script( 'wck_viewed_product', 'item', $item );
+		wp_enqueue_script( 'shopagain_viewed_product', plugins_url( '/js/shopagain-product.js', __FILE__ ), null, null, true );
+		wp_localize_script( 'shopagain_viewed_product', 'shopagain_item', $item );
 	}
 }

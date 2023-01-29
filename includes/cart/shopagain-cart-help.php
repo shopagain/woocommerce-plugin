@@ -60,7 +60,7 @@ function connect_encoded_composite($container_ids,$values) {
  * @param ShopAgain $cart The woocommerce cart
  * @return array Normalized event data
  */
-function sha_build_cart_data($cart) {
+function shopagain_build_cart_data($cart) {
     $event_data = array(
         'CurrencySymbol' => get_woocommerce_currency_symbol(),
         'Currency' => get_woocommerce_currency(),

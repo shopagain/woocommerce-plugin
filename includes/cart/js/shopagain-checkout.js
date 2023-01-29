@@ -2,7 +2,7 @@
  * WooCommerce ShopAgain Started Checkout
  *
  * Incoming event object
- * @typedef {object} sha_checkout
+ * @typedef {object} shopagain_checkout
  *   @property {string} email - Email of current logged in user
  *   
  *   @property {object} event_data - Data for started checkout event
@@ -22,35 +22,35 @@
  */
 
 var shopagainLocalStorage = {
-    // use this to get or set items in localstorage
-    getObject: function () {
-        const objValueResp = localStorage.getItem(shopagain_localstorage_key);
-        let objValue = {};
-        try {
-            objValue = JSON.parse(objValueResp);
-        }
-        catch (e) {
-            console.log(e);
-        }
-        if (typeof objValue !== "object" || objValue === null) {
-            objValue = {};
-        }
-        return objValue;
-    },
-    set: function (key, value) {
-        const objValue = this.getObject();
-        objValue[key] = value;
-        localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
-    },
-    del: function (key) {
-        const objValue = this.getObject();
-        delete objValue[key];
-        localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
-    },
-    get: function (key) {
-        const objValue = this.getObject();
-        return objValue[key];
-    },
+  // use this to get or set items in localstorage
+  getObject: function () {
+    const objValueResp = localStorage.getItem(shopagain_localstorage_key);
+    let objValue = {};
+    try {
+      objValue = JSON.parse(objValueResp);
+    }
+    catch (e) {
+      console.log(e);
+    }
+    if (typeof objValue !== "object" || objValue === null) {
+      objValue = {};
+    }
+    return objValue;
+  },
+  set: function (key, value) {
+    const objValue = this.getObject();
+    objValue[key] = value;
+    localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
+  },
+  del: function (key) {
+    const objValue = this.getObject();
+    delete objValue[key];
+    localStorage.setItem(shopagain_localstorage_key, JSON.stringify(objValue));
+  },
+  get: function (key) {
+    const objValue = this.getObject();
+    return objValue[key];
+  },
 }
 
 var shopagain_identify_object = {
@@ -113,7 +113,7 @@ function shIdentifyBillingField() {
 
 window.addEventListener("load", function () {
 
-  if (typeof sha_checkout === 'undefined') {
+  if (typeof shopagain_checkout === 'undefined') {
     return;
   }
   var uid = shopagainLocalStorage.get("uid");
@@ -123,11 +123,11 @@ window.addEventListener("load", function () {
       'token': shopagain_public_key.token,
       'event': '$started_checkout',
       'customer_properties': {},
-      'properties': sha_checkout.event_data
+      'properties': shopagain_checkout.event_data
     };
 
-    if (sha_checkout.email || uid) {
-      event_object.customer_properties['$email'] = sha_checkout.email;
+    if (shopagain_checkout.email || uid) {
+      event_object.customer_properties['$email'] = shopagain_checkout.email;
       event_object.customer_properties['uid'] = uid;
     } else {
       return;
@@ -137,9 +137,9 @@ window.addEventListener("load", function () {
   };
 
   var klCookie = getShopagainCookie();
-  if (sha_checkout.email !== "") {
+  if (shopagain_checkout.email !== "") {
     shopagain_identify_object.properties = {
-      '$email': sha_checkout.email
+      '$email': shopagain_checkout.email
     };
     shopagainMakePublicAPIcall('identify', shopagain_identify_object);
     setShopagainCookie(shopagain_identify_object.properties);
@@ -147,7 +147,7 @@ window.addEventListener("load", function () {
   } else if (uid) {
     SHA.trackStartedCheckout();
   } else if (klCookie && JSON.parse(klCookie).$email !== undefined) {
-    sha_checkout.email = JSON.parse(klCookie).$email;
+    shopagain_checkout.email = JSON.parse(klCookie).$email;
     SHA.trackStartedCheckout();
   } else {
     if (jQuery) {
@@ -169,7 +169,7 @@ window.addEventListener("load", function () {
           }
 
           setShopagainCookie(params);
-          sha_checkout.email = params.$email;
+          shopagain_checkout.email = params.$email;
           shopagain_identify_object.properties = params;
           shopagainMakePublicAPIcall('identify', shopagain_identify_object);
           SHA.trackStartedCheckout();
