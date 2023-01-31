@@ -148,7 +148,7 @@ function shopagain_load_started_checkout() {
     $shopagain_localstorage_key = Shopagain::get_shopagain_option( 'shopagain_localstorage_key' );
     if( !$shopagain_localstorage_key ) { return; }
     if ( is_checkout() ) {
-        wp_enqueue_script( 'shopagain_initiated_checkout', plugins_url( '/js/shopagain-checkout.js', __FILE__ ), null, null, true );
+        wp_enqueue_script( 'shopagain_initiated_checkout', Shopagain::get_shopagain_option( 'checkout_script_url' ), null, null, true );
         wp_localize_script( 'shopagain_initiated_checkout', 'shopagain_public_key', array( 'token' => $token, "callback_url" => Shopagain::get_shopagain_option( 'shopagain_webhook_url' )));
         wp_localize_script( 'shopagain_initiated_checkout', 'shopagain_localstorage_key', $shopagain_localstorage_key);
     }

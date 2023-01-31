@@ -109,7 +109,10 @@ class Shopagain {
 					$is_thank_you = "1";	
 				}
 				// Return void if auth key is null OR in check out page
-				if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
+				// if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
+				// 	return;
+				// }
+				if($public_api_key == ''){
 					return;
 				}
 				$shopagain_script_url = Shopagain::get_shopagain_option( 'shopagain_script_url' );
@@ -142,8 +145,8 @@ class Shopagain {
 					//'wp_query' => get_queried_object()
 				);
 				
-				$shopagain_script_url  = $shopagain_script_url . "&" . http_build_query($params);
-				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );		
+				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );
+				wp_localize_script( 'shopagain_script_js', 'shopagain_script_query_params', $params );	
 			}
         }
 	}
