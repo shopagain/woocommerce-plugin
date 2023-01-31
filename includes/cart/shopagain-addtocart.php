@@ -79,7 +79,13 @@ function shopagain_track_request($customer_identify, $data, $event_name)
     $base64_encoded = base64_encode(json_encode($atc_data));
     $url = Shopagain::get_shopagain_option( 'shopagain_webhook_url' )."track?data=" . $base64_encoded;
 
-    wp_remote_get($url);
+    wp_remote_get(
+        $url,
+        array(
+            'method' => 'GET',
+            'blocking' => false,
+        )
+    );
 }
 
 /**
