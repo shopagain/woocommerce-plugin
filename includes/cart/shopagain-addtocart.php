@@ -1,9 +1,8 @@
 <?php
 
 add_action( 'woocommerce_add_to_cart', 'shopagain_added_to_cart_event', 25, 3 );
-add_action( 'woocommerce_add_to_cart', 'shopagain_cart_update_action', 25);
 add_action( 'woocommerce_cart_emptied', 'shopagain_cart_update_action', 25);
-add_action( 'woocommerce_remove_cart_item_from_session', 'shopagain_cart_update_action', 25);
+// add_action( 'woocommerce_remove_cart_item_from_session', 'shopagain_cart_update_action', 25);
 add_action( 'woocommerce_cart_item_removed', 'shopagain_cart_update_action', 25);
 add_action( 'woocommerce_cart_item_set_quantity', 'shopagain_cart_update_action', 25);
 add_action( 'init', 'set_shopagain_cookie');
@@ -113,6 +112,7 @@ function shopagain_added_to_cart_event($cart_item_key, $product_id, $quantity)
     if ( ! $added_product instanceof WC_Product ) { return; }
 
     shopagain_track_request($customer_identify, shopagain_addtocart_data($added_product, $quantity, WC()->cart), 'cart/add');
+    shopagain_cart_update_action();
 }
 
 
