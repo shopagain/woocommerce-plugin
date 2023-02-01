@@ -107,6 +107,8 @@ function shopagain_added_to_cart_event($cart_item_key, $product_id, $quantity)
     $email = shopagain_pull_email($current_user);
     $customer_identify = array(
         'email' => $email,
+        'pid' => Shopagain::get_shopagain_pid(),
+        'uid' => Shopagain::get_shopagain_uid(),
     );
     $added_product = wc_get_product( $product_id );
     if ( ! $added_product instanceof WC_Product ) { return; }
@@ -128,6 +130,8 @@ function shopagain_cart_update_action(){
     $email = shopagain_pull_email($current_user);
     $customer_identify = array(
         'email' => $email,
+        'pid' => Shopagain::get_shopagain_pid(),
+        'uid' => Shopagain::get_shopagain_uid(),
     );
 
     $cart = WC()->cart;

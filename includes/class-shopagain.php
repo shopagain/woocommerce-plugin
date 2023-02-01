@@ -325,4 +325,41 @@ class Shopagain {
 		return isset ($_COOKIE[$full_cookie_key]) ? sanitize_text_field($_COOKIE[$full_cookie_key]) : NULL;
 	}
 
+	public static function get_shopagain_pid() {
+		$pid_cookie = self::get_shopagain_cookie( 'pid' );
+		$is_pid_cookie_valid = FALSE;
+		$pid = NULL; 
+		if($pid_cookie){
+			$pid_cookie = stripslashes($pid_cookie);
+			$pid = json_decode($pid_cookie);
+			if($pid && wp_is_uuid($pid)){
+				$is_pid_cookie_valid = TRUE;
+			}
+		}
+
+		if ($is_pid_cookie_valid) {
+			return $pid;
+		} else {
+			return NULL;
+		}  
+	}
+
+	public static function get_shopagain_uid() {
+		$pid_cookie = self::get_shopagain_cookie( 'uid' );
+		$is_pid_cookie_valid = FALSE;
+		$pid = NULL; 
+		if($pid_cookie){
+			$pid_cookie = stripslashes($pid_cookie);
+			$pid = json_decode($pid_cookie);
+			if($pid && wp_is_uuid($pid)){
+				$is_pid_cookie_valid = TRUE;
+			}
+		}
+
+		if ($is_pid_cookie_valid) {
+			return $pid;
+		} else {
+			return NULL;
+		}  
+	}
 }
