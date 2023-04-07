@@ -131,7 +131,10 @@ class Shopagain {
 					$handle = $obj->post_name;
 				}
 
-				
+				global $current_user;
+				wp_get_current_user();
+				$email = shopagain_pull_email($current_user);
+
 				$params = array(
 					'is_shop' => is_shop(),
 					'is_product_category' => is_product_category(),
@@ -142,6 +145,7 @@ class Shopagain {
 					'handle' => $handle,
 					'is_search' => is_search(),
 					'is_thank_you' => $is_thank_you,
+					'email' => $email,
 					//'wp_query' => get_queried_object()
 				);
 				
