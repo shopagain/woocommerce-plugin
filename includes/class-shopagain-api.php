@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) exit; // Exit if accessed directly
 class Shopagain_API
 {
 
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.5';
     const SHOPAGAIN_BASE_URL = 'shopagain/v1';
     const ORDERS_ENDPOINT = 'orders';
     const EXTENSION_VERSION_ENDPOINT = 'version';

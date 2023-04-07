@@ -145,7 +145,7 @@ class Shopagain_Admin {
 		$class = 'notice notice-error';
 		$message = __( 'Make sure woocommerce is activated in order to connect with your shopagain account.', 'inactive-woocommerce-message' );
 	 
-		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+		// printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
 	}
 
 	

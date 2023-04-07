@@ -9,7 +9,7 @@ add_action('woocommerce_after_cart_totals', 'shopagain_cart_update_action', 25);
 
 add_action( 'init', 'set_shopagain_cookie');
 function set_shopagain_cookie() {
-    if (!isset($_COOKIE["shopagain_cart_token"])) {
+    if (!isset($_COOKIE["shopagain_cart_token"]) && !headers_sent()) {
         $result = bin2hex(random_bytes(16));
         setcookie("shopagain_cart_token", $result, time()+60*60*24*30, '/');
     }
