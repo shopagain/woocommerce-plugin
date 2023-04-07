@@ -465,6 +465,7 @@ function get_shopagain_uid() {
     }  
 }
 
+
 add_action('rest_api_init', function () {
     register_rest_route(Shopagain_API::SHOPAGAIN_BASE_URL, Shopagain_API::EXTENSION_VERSION_ENDPOINT, array(
         'methods' => WP_REST_Server::READABLE,

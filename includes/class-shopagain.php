@@ -109,17 +109,21 @@ class Shopagain {
 					$is_thank_you = "1";	
 				}
 				// Return void if auth key is null OR in check out page
-				if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
+				// if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
+				// 	return;
+				// }
+				if($public_api_key == ''){
 					return;
 				}
+				$shopagain_script_url = Shopagain::get_shopagain_option( 'shopagain_script_url' );
+				if($shopagain_script_url == ''){
+					return;
+				}
+
 				$api_url = Shopagain::get_shopagain_option( 'api_url' );
 				if($api_url == ''){
 					return;
 				}
-
-				$shopagain_script_url = plugins_url( '/js/shopagain_script.min.js', __FILE__ );
-				$shopagain_timeme_script_url = plugins_url( '/js/timeme.js', __FILE__ );
-				$shopagain_widget_script_url = plugins_url( '/js/widgets.js', __FILE__ );
 
 				$obj = get_queried_object();
 				$handle = '';
@@ -127,10 +131,11 @@ class Shopagain {
 					$handle = $obj->post_name;
 				}
 
-				
+				global $current_user;
+				wp_get_current_user();
+				$email = shopagain_pull_email($current_user);
+
 				$params = array(
-					'store' => 'woocommerce',
-					'webkey' => $public_api_key,
 					'is_shop' => is_shop(),
 					'is_product_category' => is_product_category(),
 					'is_product_tag' => is_product_tag(),
@@ -140,15 +145,12 @@ class Shopagain {
 					'handle' => $handle,
 					'is_search' => is_search(),
 					'is_thank_you' => $is_thank_you,
+					'email' => $email,
 					//'wp_query' => get_queried_object()
 				);
 				
-				$shopagain_script_url  = $shopagain_script_url . "?" . http_build_query($params);
-				
 				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );
-				wp_localize_script( 'shopagain_script_js', 'LATTICE_API', $api_url);
-				wp_localize_script( 'shopagain_script_js', 'shopagain_timeme_script_url', $shopagain_timeme_script_url);
-				wp_localize_script( 'shopagain_script_js', 'shopagain_widget_script_url', $shopagain_widget_script_url);			
+				wp_localize_script( 'shopagain_script_js', 'shopagain_script_query_params', $params );	
 			}
         }
 	}
@@ -338,7 +340,7 @@ class Shopagain {
 				$is_pid_cookie_valid = TRUE;
 			}
 		}
-	
+
 		if ($is_pid_cookie_valid) {
 			return $pid;
 		} else {
@@ -357,7 +359,7 @@ class Shopagain {
 				$is_pid_cookie_valid = TRUE;
 			}
 		}
-	
+
 		if ($is_pid_cookie_valid) {
 			return $pid;
 		} else {
