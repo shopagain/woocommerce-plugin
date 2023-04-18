@@ -112,16 +112,11 @@ class Shopagain {
 				// if($public_api_key == '' || (is_checkout() && $is_thank_you != "1" )){
 				// 	return;
 				// }
-				if($public_api_key == ''){
+				if(!$public_api_key){
 					return;
 				}
 				$shopagain_script_url = Shopagain::get_shopagain_option( 'shopagain_script_url' );
-				if($shopagain_script_url == ''){
-					return;
-				}
-
-				$api_url = Shopagain::get_shopagain_option( 'api_url' );
-				if($api_url == ''){
+				if(!$shopagain_script_url){
 					return;
 				}
 
@@ -148,9 +143,11 @@ class Shopagain {
 					'email' => $email,
 					//'wp_query' => get_queried_object()
 				);
-				
-				wp_enqueue_script( 'shopagain_script_js', $shopagain_script_url, null, null, true );
-				wp_localize_script( 'shopagain_script_js', 'shopagain_script_query_params', $params );	
+
+				$shopagain_script_loader_url = plugins_url( '/js/shopagain_script_loader.js', __FILE__ );
+				wp_enqueue_script( 'shopagain_script_loader', $shopagain_script_loader_url, null, null, true );
+				wp_add_inline_script('shopagain_script_loader', 'var shopagain_script_src=' . wp_json_encode($shopagain_script_url) . ';', 'before');
+				wp_localize_script( 'shopagain_script_loader', 'shopagain_script_query_params', $params );	
 			}
         }
 	}

@@ -10,7 +10,7 @@
  * Plugin Name:       ShopAgain
  * Plugin URI:        https://shopagain.io/
  * Description:       The plugin helps to sync your WooCommerce data with ShopAgain.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            ShopAgain
  * Author URI:        https://shopagain.io
  * License:           GPL-2.0+
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SHOPAGAIN_VERSION', '1.0.2' );
+define( 'SHOPAGAIN_VERSION', '1.0.6' );
 
 /**
  * The code that runs during plugin activation.
